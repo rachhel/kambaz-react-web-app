@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import CourseNavigation from "../Navigation";
+import CourseNavigation from "./Navigation";
 import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
@@ -22,15 +22,16 @@ export default function Courses() {
           <td valign="top">
             <Routes>
               <Route path="/" element={<Navigate to="Home" />} />
-              <Route path="Home" element={<Home />} />
-              <Route path="Modules" element={<Modules />} />
-              <Route path="Assignments" element={<Assignments />} />
-              <Route path="Assignments/:aid" element={<AssignmentEditor />} />
+              <Route path="Home" element={<Home/>} />
+              <Route path="Modules" element={<Modules/>} />
+              <Route path="Assignments" element={<Assignments/>} />
+              <Route path="Assignments/:aid" element={<AssignmentEditor/>} />
               <Route path="People" element={<h2>People</h2>} />
             </Routes>
           </td>
         </tr>
       </table>
+
 
       </div>
   );}
