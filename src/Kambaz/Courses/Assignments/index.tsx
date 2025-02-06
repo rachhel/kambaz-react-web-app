@@ -4,8 +4,6 @@ import { BsGripVertical } from "react-icons/bs";
 import RightButton from "./RightButtons";
 import GreenCheckmark from "./greenCheck";
 import GreenNotebook from "./GreenNotebook";
-import { Link } from "react-router";
-
 
 export default function Assignments() {
   return (
