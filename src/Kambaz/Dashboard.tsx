@@ -13,7 +13,7 @@ export default function Dashboard() {
     <Col className="wd-dashboard-course">
     <Card>
       <Link to="/Kambaz/Courses/1234/Home" className="wd-dashboard-course-link text-decoration-none text-dark">
-        <Card.Img variant="top" src="src/images/reactjs.webp" width="250px" height={160} />
+        <Card.Img variant="top" src="src/images/reactjs.webp" width="100%" height={160} />
         <Card.Body>
           <Card.Title className="wd-dashboard-course-title">CS1234 React JS</Card.Title>
           <Card.Text className="wd-dashboard-course-description">Full Stack software developer</Card.Text>
@@ -26,7 +26,7 @@ export default function Dashboard() {
   <Col className="wd-dashboard-course">
     <Card>
       <Link to="/Kambaz/Courses/5678/Home" className="wd-dashboard-course-link text-decoration-none text-dark">
-        <Card.Img variant="top" src="src/images/reactjs.webp" width="250px" height={160} />
+        <Card.Img variant="top" src="src/images/reactjs.webp" width="100%" height={160} />
         <Card.Body>
           <Card.Title className="wd-dashboard-course-title">CS5678 Node JS</Card.Title>
           <Card.Text className="wd-dashboard-course-description">Backend Development with Node.js</Card.Text>
@@ -39,7 +39,7 @@ export default function Dashboard() {
   <Col className="wd-dashboard-course"> {/* ✅ Each card inside a column */}
     <Card>
       <Link to="/Kambaz/Courses/1234/Home" className="wd-dashboard-course-link text-decoration-none text-dark">
-        <Card.Img variant="top" src="src/images/reactjs.webp" width="250px" height={160} />
+        <Card.Img variant="top" src="src/images/reactjs.webp" width="100%" height={160} />
         <Card.Body>
           <Card.Title className="wd-dashboard-course-title">CS1234 React JS</Card.Title>
           <Card.Text className="wd-dashboard-course-description">Full Stack software developer</Card.Text>
@@ -52,7 +52,7 @@ export default function Dashboard() {
   <Col className="wd-dashboard-course">
     <Card>
       <Link to="/Kambaz/Courses/5678/Home" className="wd-dashboard-course-link text-decoration-none text-dark">
-        <Card.Img variant="top" src="src/images/reactjs.webp" width="250px" height={160} />
+        <Card.Img variant="top" src="src/images/reactjs.webp" width="100%" height={160} />
         <Card.Body>
           <Card.Title className="wd-dashboard-course-title">CS5678 Node JS</Card.Title>
           <Card.Text className="wd-dashboard-course-description">Backend Development with Node.js</Card.Text>
@@ -64,7 +64,7 @@ export default function Dashboard() {
   <Col className="wd-dashboard-course"> {/* ✅ Each card inside a column */}
     <Card>
       <Link to="/Kambaz/Courses/1234/Home" className="wd-dashboard-course-link text-decoration-none text-dark">
-        <Card.Img variant="top" src="src/images/reactjs.webp" width="250px" height={160} />
+        <Card.Img variant="top" src="src/images/reactjs.webp" width="100%" height={160} />
         <Card.Body>
           <Card.Title className="wd-dashboard-course-title">CS1234 React JS</Card.Title>
           <Card.Text className="wd-dashboard-course-description">Full Stack software developer</Card.Text>
@@ -77,7 +77,7 @@ export default function Dashboard() {
   <Col className="wd-dashboard-course">
     <Card>
       <Link to="/Kambaz/Courses/5678/Home" className="wd-dashboard-course-link text-decoration-none text-dark">
-        <Card.Img variant="top" src="src/images/reactjs.webp" width="250px" height={160} />
+        <Card.Img variant="top" src="src/images/reactjs.webp" width="100%" height={160} />
         <Card.Body>
           <Card.Title className="wd-dashboard-course-title">CS5678 Node JS</Card.Title>
           <Card.Text className="wd-dashboard-course-description">Backend Development with Node.js</Card.Text>
@@ -89,7 +89,7 @@ export default function Dashboard() {
   <Col className="wd-dashboard-course"> {/* ✅ Each card inside a column */}
     <Card>
       <Link to="/Kambaz/Courses/1234/Home" className="wd-dashboard-course-link text-decoration-none text-dark">
-        <Card.Img variant="top" src="src/images/reactjs.webp" width="250px" height={160} />
+        <Card.Img variant="top" src="src/images/reactjs.webp" width="100%" height={160} />
         <Card.Body>
           <Card.Title className="wd-dashboard-course-title">CS1234 React JS</Card.Title>
           <Card.Text className="wd-dashboard-course-description">Full Stack software developer</Card.Text>
