@@ -10,7 +10,7 @@ export default function Dashboard() {
   <h2 id="wd-dashboard-published">Published Courses (12)</h2> <hr />
   <div id="wd-dashboard-courses">
     <Row xs={1} md={4} className="g-4">
-    <Col className="wd-dashboard-course"> {/* ✅ Each card inside a column */}
+    <Col className="wd-dashboard-course">
     <Card>
       <Link to="/Kambaz/Courses/1234/Home" className="wd-dashboard-course-link text-decoration-none text-dark">
         <Card.Img variant="top" src="src/images/reactjs.webp" width="250px" height={160} />
