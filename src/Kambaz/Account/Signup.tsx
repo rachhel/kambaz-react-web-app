@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 export default function Signup() {
   return (
-    <div id="wd-signup-screen">
+    <div id="wd-signup-screen" style={{ width: "300px" }}>
       <h1>Sign up</h1>
       <Form.Control id="wd-username"
              placeholder="username"

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 export default function Profile() {
   return (
-    <div id="wd-profile-screen">
+    <div id="wd-profile-screen" style={{ width: "300px" }}>
       <h1>Profile</h1>
       <Form.Control id="wd-username"
             defaultValue="alice" placeholder="username"className="mb-2"/>

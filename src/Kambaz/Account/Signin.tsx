@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 export default function Signin() {
   return (
-    <div id="wd-signin-screen">
+    <div id="wd-signin-screen" style={{ width: "300px" }}>
       <h1>Sign in</h1>
       <Form.Control id="wd-username"
              placeholder="username"
