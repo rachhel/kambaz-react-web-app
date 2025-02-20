@@ -1,0 +1,27 @@
+[
+    {
+      "id": "A101",
+      "name": "A1",
+      "course": "RS101",
+      "dueDate": "Not Available until May 6 at 12:00am ",
+      "status": "Multiple Modes",
+      "points": "May 13 at 11:59pm | 100 "
+    },
+    {
+      "id": "A102",
+      "name": "A2",
+      "course": "RS101",
+      "dueDate": "Not Available until May 13 at 12:00am",
+      "status": "Multiple Modes",
+      "points": "May 20 at 11:59pm | 100"
+    },
+    {
+      "id": "A201",
+      "name": "A1",
+      "course": "RS102",
+      "dueDate": "Not Available until May 20 at 12:00am",
+      "status": "Graded",
+      "points": "May 27 at 11:59pm | 100"
+    }
+  ]
+  
