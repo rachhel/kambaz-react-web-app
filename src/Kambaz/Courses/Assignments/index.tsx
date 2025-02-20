@@ -1,6 +1,5 @@
 import { useParams, Link } from "react-router-dom";
 import { ListGroup } from "react-bootstrap";
-import { BsGripVertical } from "react-icons/bs";
 import * as db from "../../Database";
 import GreenCheckmark from "./greenCheck";
 import GreenNotebook from "./GreenNotebook";
