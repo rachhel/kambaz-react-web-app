@@ -14,6 +14,7 @@ import ProtectedRoute from "./Account/ProtectedRoute";
 
 export default function Kambaz() {
   const [courses, setCourses] = useState<any[]>(db.courses);
+  
   const [course, setCourse] = useState<any>({
     _id: "1234", name: "New Course", number: "New Number",
     startDate: "2023-09-10", endDate: "2023-12-15", description: "New Description",
