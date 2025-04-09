@@ -1,157 +1,195 @@
-import { useParams, Link } from "react-router-dom";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import * as db from "../../Database";
+import { Form, Button, Row, Col } from "react-bootstrap";
+import "../../styles.css";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addAssignment, updateAssignment } from "./reducer";
+import { v4 as uuidv4 } from "uuid";
+import * as assignmentsClient from "./client";
+import * as coursesClient from "../client";
+
 
 export default function AssignmentEditor() {
-  const { cid, aid } = useParams(); // Get course and assignment IDs from URL
-  console.log("Course ID:", cid, "Assignment ID:", aid);
+  const { cid, aid } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // 🔍 Retrieve assignment from the database
-  const assignment = db.assignments.find((assignment: any) => assignment.id === aid);
+  const assignments = useSelector(
+    (state: any) => state.assignmentsReducer.assignments
+  );
+  const assignment = assignments.find((a: any) => a._id === aid);
 
-  if (!assignment) {
-    return <p className="text-danger">Assignment not found.</p>;
-  }
+  const [title, setTitle] = useState(assignment?.title || "");
+  const [description, setDescription] = useState(assignment?.description || "");
+  const [points, setPoints] = useState(assignment?.points || "");
+  const [dueDate, setDueDate] = useState(assignment?.dueDate || "");
+  const [availableFrom, setAvailableFrom] = useState(
+    assignment?.availableDate || ""
+  );
+
+  const saveAssignment = async (assignment: any) => {
+    await assignmentsClient.updateAssignment(assignment);
+    dispatch(updateAssignment(assignment));
+  };
+
+  const createNewAssignmentForCourse = async () => {
+    if (!cid) return;
+
+    const newAssignment = {
+      _id: aid || uuidv4(),
+      title,
+      description,
+      points,
+      dueDate,
+      availableDate: availableFrom,
+      course: cid,
+      modules: [],
+    };
+
+    if (aid && assignment) {
+      await saveAssignment(newAssignment);
+    } else {
+      const assignment = await coursesClient.createAssignmentForCourse(
+        cid,
+        newAssignment
+      );
+      dispatch(addAssignment(assignment));
+    }
+
+    navigate(`/Kambaz/Courses/${cid}/Assignments/`);
+  };
 
   return (
-    <Container className="mt-4">
-
+    <div id="wd-assignments-editor">
       <Form>
-        <Row className="mb-3 gap-3">
-          <Col md={12}>
-            <Form.Label>Assignment Name</Form.Label>
-            <Form.Control type="text" defaultValue={assignment.name} />
-          </Col>
+        {/* Assignment Name */}
+        <Form.Group id="wd-name">
+          <Form.Label><b>Assignment Name</b></Form.Label>
+          <Form.Control
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="mb-2"
+          />
+        </Form.Group>
 
-          <Col md={12}>
-            <Form.Label>Description</Form.Label>
-            <div
-              className="form-control p-2"
-              contentEditable={true}
-              style={{ minHeight: "80px" }}
-            >
-              The assignment is <span style={{ color: "red" }}>available online</span>.
-              <br />
-              Submit a link to the landing page of your Web application running on Netlify.
-              <p>The landing page should include the following:</p>
-              <ul>
-                <li>Your full name and section</li>
-                <li>Links to each of the lab assignments</li>
-                <li>Link to the Kambaz application</li>
-                <li>Links to all relevant source code repositories</li>
-              </ul>
-              <p> The Kambaz application should include a link to navigate back to the landing page.</p>
+        {/* Description */}
+        <Form.Group className="mt-3" id="wd-description">
+          <Form.Label><b>Description</b></Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="mb-3"
+          />
+        </Form.Group>
+
+        {/* Points */}
+        <Form.Group as={Row} className="mt-4" id="wd-points">
+          <Form.Label column sm={3}><b>Points</b></Form.Label>
+          <Col sm={9}>
+            <Form.Control
+              type="number"
+              value={points}
+              onChange={(e) => setPoints(e.target.value)}
+              className="mb-4"
+            />
+          </Col>
+        </Form.Group>
+
+        {/* Assignment Group */}
+        <Form.Group as={Row} className="mt-3" id="wd-group">
+          <Form.Label column sm={3}><b>Assignment Group</b></Form.Label>
+          <Col sm={9}>
+            <Form.Control as="select" defaultValue="ASSIGNMENTS">
+              <option value="ASSIGNMENTS">ASSIGNMENTS</option>
+            </Form.Control>
+          </Col>
+        </Form.Group>
+
+        {/* Grade Display */}
+        <Form.Group as={Row} className="mt-3" id="wd-display-grade-as">
+          <Form.Label column sm={3}><b>Display Grade as</b></Form.Label>
+          <Col sm={9}>
+            <Form.Control as="select" defaultValue="Percentage">
+              <option value="Percentage">Percentage</option>
+            </Form.Control>
+          </Col>
+        </Form.Group>
+
+        {/* Submission Type */}
+        <Form.Group as={Row} className="mt-3" id="wd-submission-type">
+          <Form.Label column sm={3}><b>Submission Type</b></Form.Label>
+          <Col sm={9}>
+            <Form.Control as="select" defaultValue="Online">
+              <option value="Online">Online</option>
+            </Form.Control>
+            <br />
+            <b>Online Entry Options</b>
+            <Form.Check type="checkbox" label="Text Entry" />
+            <Form.Check type="checkbox" label="Website URL" defaultChecked />
+            <Form.Check type="checkbox" label="Media Recordings" />
+            <Form.Check type="checkbox" label="Student Annotation" />
+            <Form.Check type="checkbox" label="File Uploads" />
+          </Col>
+        </Form.Group>
+
+        {/* Assign To */}
+        <Form.Group as={Row} className="mt-4" id="wd-assign-to">
+          <Form.Label column sm={3}><b>Assign to</b></Form.Label>
+          <Col sm={9}>
+            <div className="fake-multiselect">
+              <Button variant="secondary" className="multiselect-tag">
+                Everyone X
+              </Button>
             </div>
-          </Col>
-        </Row>
 
-        <Row className="mb-3">
-          <Col md={3} className="text-md-end">
-            <Form.Label>Points</Form.Label>
-          </Col>
-          <Col md={9}>
-            <Form.Control type="number" defaultValue={assignment.points} />
-          </Col>
-        </Row>
+            <b>Due</b>
+            <Form.Control
+              type="date"
+              className="mb-2"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
 
-        <Row className="mb-3">
-          <Col md={3} className="text-md-end">
-            <Form.Label>Assignment Group</Form.Label>
+            <Row>
+              <Col sm={6}>
+                <Form.Label><b>Available From</b></Form.Label>
+                <Form.Control
+                  type="date"
+                  value={availableFrom}
+                  onChange={(e) => setAvailableFrom(e.target.value)}
+                  id="wd-available-from"
+                />
+              </Col>
+              <Col sm={6}>
+                <Form.Label><b>Until</b></Form.Label>
+                <Form.Control
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  id="wd-available-until"
+                />
+              </Col>
+            </Row>
           </Col>
-          <Col md={9}>
-            <Form.Select>
-              <option>ASSIGNMENTS</option>
-            </Form.Select>
-          </Col>
-        </Row>
+        </Form.Group>
 
-        <Row className="mb-3">
-          <Col md={3} className="text-md-end">
-            <Form.Label>Display Grade as</Form.Label>
-          </Col>
-          <Col md={9}>
-            <Form.Select>
-              <option>Percentage</option>
-            </Form.Select>
-          </Col>
-        </Row>
-
-        <Row className="mb-3">
-          <Col md={3} className="text-md-end">
-            <Form.Label>Submission Type</Form.Label>
-          </Col>
-          <Col md={9}>
-            <div className="border p-3 rounded">
-              <Form.Select>
-                <option>Online</option>
-              </Form.Select>
-
-              <Form.Group className="mt-3">
-                <Form.Label>Online Entry Options</Form.Label>
-                <div>
-                  <Form.Check type="checkbox" label="Text Entry" />
-                  <Form.Check type="checkbox" label="Website URL" defaultChecked />
-                  <Form.Check type="checkbox" label="Media Recordings" />
-                  <Form.Check type="checkbox" label="Student Annotation" />
-                  <Form.Check type="checkbox" label="File Uploads" />
-                </div>
-              </Form.Group>
-            </div>
-          </Col>
-        </Row>
-
-        <Row className="mb-3">
-          <Col md={3} className="text-md-end">
-            <Form.Label>Assign</Form.Label>
-          </Col>
-          <Col md={9}>
-            <div className="border p-3 rounded">
-              <Row className="align-items-center">
-                <Col md={3}>
-                  <Form.Label>Assign To</Form.Label>
-                </Col>
-                <Col md={9}>
-                  <Form.Control type="text" defaultValue="Everyone" />
-                </Col>
-              </Row>
-
-              <Row className="mt-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label>Due</Form.Label>
-                </Col>
-                <Col md={9}>
-                  <Form.Control type="datetime-local" defaultValue={assignment.dueDate} />
-                </Col>
-              </Row>
-
-              <Row className="mt-3 align-items-center">
-                <Col md={3}>
-                  <Form.Label>Available from</Form.Label>
-                </Col>
-                <Col md={4}>
-                  <Form.Control type="datetime-local" defaultValue="2025-05-06T12:00" />
-                </Col>
-                <Col md={1} className="text-center">
-                  <Form.Label>Until</Form.Label>
-                </Col>
-                <Col md={4}>
-                  <Form.Control type="datetime-local" />
-                </Col>
-              </Row>
-            </div>
-          </Col>
-        </Row>
+        <hr />
 
         {/* Buttons */}
-        <div className="d-flex justify-content-end">
-          <Link to={`/Kambaz/Courses/${cid}/Assignments`}>
-            <Button variant="secondary" className="me-2">Cancel</Button>
-          </Link>
-          <Link to={`/Kambaz/Courses/${cid}/Assignments`}>
-            <Button variant="danger">Save</Button>
-          </Link>
-        </div>
+        <Row>
+          <Col className="text-end">
+            <Link to={`/Kambaz/Courses/${cid}/Assignments`}>
+              <Button variant="secondary" className="me-2">Cancel</Button>
+            </Link>
+            <Button variant="danger" onClick={createNewAssignmentForCourse}>
+              Save
+            </Button>
+          </Col>
+        </Row>
       </Form>
-    </Container>
+    </div>
   );
 }

@@ -4,9 +4,11 @@ import { BsGripVertical } from "react-icons/bs";
 import LessonControlButtons from "./LessonControlButtons";
 import ModuleControlButtons from "./ModuleControlButtons";
 import ModulesControls from "./ModulesControls";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as coursesClient from "../client";
+import * as modulesClient from "./client";
 
-import { addModule, editModule, updateModule, deleteModule }
+import { addModule, editModule, updateModule, deleteModule, setModules }
   from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -16,16 +18,35 @@ export default function Modules() {
   const [moduleName, setModuleName] = useState("");
   const { modules } = useSelector((state: any) => state.modulesReducer);
   const dispatch = useDispatch();
+  const saveModule = async (module: any) => {
+    await modulesClient.updateModule(module);
+    dispatch(updateModule(module));
+  };
 
+  const removeModule = async (moduleId: string) => {
+    await modulesClient.deleteModule(moduleId);
+    dispatch(deleteModule(moduleId));
+  };
 
+  const createModuleForCourse = async () => {
+    if (!cid) return;
+    const newModule = { name: moduleName, course: cid };
+    const module = await coursesClient.createModuleForCourse(cid, newModule);
+    dispatch(addModule(module));
+  };
+  const fetchModules = async () => {
+    const modules = await coursesClient.findModulesForCourse(cid as string);
+    dispatch(setModules(modules));
+  };
+
+  useEffect(() => {
+    fetchModules();
+  }, []);
   return (
     <div className="wd-modules">
       
-      <ModulesControls moduleName={moduleName} setModuleName={setModuleName}
-        addModule={() => {
-          dispatch(addModule({ name: moduleName, course: cid }));
-          setModuleName("");
-        }} />
+      <ModulesControls moduleName={moduleName} setModuleName={setModuleName} 
+        addModule={createModuleForCourse} />
       <ListGroup className="rounded-0" id="wd-modules">
          {modules.length === 0 ? (
           <p>No modules found for this course.</p>
@@ -44,16 +65,15 @@ export default function Modules() {
         }
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            dispatch(updateModule({ ...module, editing: false }));
+            saveModule({ ...module, editing: false });
           }
         }}
         defaultValue={module.name} />
     )}
 
       <ModuleControlButtons moduleId={module._id}
-                  deleteModule={(moduleId) => {
-                    dispatch(deleteModule(moduleId));
-                  }}
+                  deleteModule={(moduleId) => removeModule(moduleId)}
+
                   editModule={(moduleId) => dispatch(editModule(moduleId))} />
               </div>
               {module.lessons && (

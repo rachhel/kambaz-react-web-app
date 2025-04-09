@@ -11,6 +11,7 @@ export default function Account() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
 
   return (
+    
     <div id="wd-accounts">
 
     <div className="d-none d-md-block">
