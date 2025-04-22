@@ -67,7 +67,7 @@ export default function Assignments() {
         </div>
       </div>
 
-      {/* ✅ Assignment List */}
+      {}
       <ListGroup className="rounded-0" id="wd-assignments">
         {courseAssignments.length === 0 ? (
           <p>No assignments found for this course.</p>

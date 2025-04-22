@@ -4,15 +4,26 @@ import { Row, Col, Card, Button, FormControl } from "react-bootstrap";
 
   export default function Dashboard(
     { courses, course, setCourse, addNewCourse,
-      deleteCourse, updateCourse }: {
-      courses: any[]; course: any; setCourse: (course: any) => void;
-      addNewCourse: () => void; deleteCourse: (course: any) => void;
-      updateCourse: () => void; })
-     {
+      deleteCourse, updateCourse, enrolling, setEnrolling, updateEnrollment  } : {
+        courses: any;
+        course: any;
+        setCourse: (course: any) => void;
+        addNewCourse: () => void;
+        deleteCourse: (course: any) => void;
+        updateCourse: () => void;
+        enrolling: boolean;
+        setEnrolling: (enrolling: boolean) => void;
+        updateEnrollment: (courseId: string, enrolled: boolean) => void;
+
+      }) {
     
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
+      <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
+          {enrolling ? "My Courses" : "All Courses"}
+        </button>
+
       
       <h5>New Course
           <button className="btn btn-primary float-end"
@@ -24,6 +35,11 @@ import { Row, Col, Card, Button, FormControl } from "react-bootstrap";
         </button>
       </h5><br />
       <FormControl value={course.name} className="mb-2"
+         
+         
+    
+
+
           onChange={(e) => setCourse({ ...course, name: e.target.value }) } />
                    
                    <FormControl 
@@ -38,13 +54,27 @@ import { Row, Col, Card, Button, FormControl } from "react-bootstrap";
       <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
-          {courses.map((course) => (
+        {(enrolling ? courses : courses).map(
+            (course: any, index: any) =>  (
             <Col className="wd-dashboard-course" style={{ width: "300px" }}>
               <Card>
                 <Link to={`/Kambaz/Courses/${course._id}/Home`}
                       className="wd-dashboard-course-link text-decoration-none text-dark" >
                   <Card.Img src="/src/images/reactjs.webp" variant="top" width="100%" height={160} />
                   <Card.Body className="card-body">
+                  <h5 className="wd-dashboard-course-title card-title">
+            {enrolling && (
+              <button onClick={(event) => {
+                        event.preventDefault();
+                        updateEnrollment(course._id, !course.enrolled);
+                      }}
+                      className={`btn ${ course.enrolled ? "btn-danger" : "btn-success" } float-end`} >
+                {course.enrolled ? "Unenroll" : "Enroll"}
+              </button>
+            )}
+            {course.name}
+          </h5>
+
                     <Card.Title className="wd-dashboard-course-title text-nowrap overflow-hidden">
                       {course.name} </Card.Title>
                     <Card.Text className="wd-dashboard-course-description overflow-hidden" style={{ height: "100px" }}>
